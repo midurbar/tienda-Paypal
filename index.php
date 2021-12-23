@@ -51,28 +51,23 @@ $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
     <main>
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <?php foreach($resultado as $row) { ?>
                 <div class="col">
                     <div class="card shadow-sm">
-                        <img src="images/productos/1/principal.jpg">
-                        <div class="card-body">
-                            <h5 class="card-title">Batman Arkham Asylum</h5>
-                            <p class="card-text">30.00 €</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <a href="" class="btn btn-primary">Detalles</a>            
-                                </div>
-                                <a href="" class="btn btn-success">Agregar</a>  
-                            </div>
-                        </div>
-                    </div>        
-                </div>
+                        <?php 
+                        
+                        $id=$row['id'];
+                        $imagen = "images/productos/" . $id . "/principal.jpg";
 
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <img src="images/productos/1/principal.jpg">
+                        if (!file_exists($imagen)) {
+                            $imagen = "images/no-photo.jpg";
+                        }
+                        
+                        ?>
+                        <img src="<?php echo $imagen; ?>">
                         <div class="card-body">
-                            <h5 class="card-title">Batman Arkham Asylum</h5>
-                            <p class="card-text">30.00 €</p>
+                            <h5 class="card-title"><?php echo $row['nombre']; ?></h5>
+                            <p class="card-text"><?php echo $row['precio']; ?> €</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="btn-group">
                                     <a href="" class="btn btn-primary">Detalles</a>            
@@ -82,22 +77,7 @@ $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                     </div>        
                 </div>
-
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <img src="images/productos/1/principal.jpg">
-                        <div class="card-body">
-                            <h5 class="card-title">Batman Arkham Asylum</h5>
-                            <p class="card-text">30.00 €</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <a href="" class="btn btn-primary">Detalles</a>            
-                                </div>
-                                <a href="" class="btn btn-success">Agregar</a>  
-                            </div>
-                        </div>
-                    </div>        
-                </div>
+                <?php } ?>
             </div>
         </div>
     </main>
