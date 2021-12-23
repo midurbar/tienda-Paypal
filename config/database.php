@@ -1,4 +1,4 @@
-<? php
+<?php
 
     class Database {
         private $hostname = "localhost";
@@ -18,6 +18,7 @@
                 $pdo = new PDO($conexion, $this->username, $this->password, $options);
 
                 return $pdo;
+
             } catch(PDOException $e) {
                 echo 'Error conexion: ' . $e->getMessage();
                 exit;
