@@ -84,10 +84,10 @@ if($id=='' || $token=='') {
     <main>
         <div class="container">
             <div class="row">
-                <div class="col-6-md order-md-1">
+                <div class="col-md-6 order-md-1">
                     <img src="images/productos/<?php echo $id; ?>/principal.jpg">
                 </div>
-                <div class="col-6-md order-md-2">
+                <div class="col-md-6 order-md-2">
                     <h2><?php echo $nombre; ?></h2>
                 </div>
             </div>
