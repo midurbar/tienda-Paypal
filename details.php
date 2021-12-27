@@ -5,9 +5,37 @@ require 'config/database.php';
 $db = new Database();
 $con = $db->conectar();
 
-$sql = $con->prepare("SELECT id, nombre, precio FROM productos WHERE activo=1");
-$sql->execute();
-$resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
+$id = isset ($_GET['id']) ? $_GET['id'] : '';
+$token = isset ($_GET['token']) ? $_GET['token'] : '';
+
+if($id=='' || $token=='') {
+
+    echo 'Errar al procesar la petición.';
+    exit;
+
+} else {
+    $token_tmp= hash_hmac('sha256', $id, KEY_TOKEN);
+
+    if ($token == $token_tmp) {
+
+        $sql = $con->prepare("SELECT count(id) FROM productos WHERE id=? AND activo=1");
+        $sql->execute([$id]);
+        if ($sql->fetchColumn() > 0) {
+
+            $sql = $con->prepare("SELECT nombre, descripcion, precio FROM productos WHERE id=? AND activo=1 LIMIT 1");
+            $sql->execute([$id]);
+            $row = $sql->fetch(PDO::FETCH_ASSOC);
+            $nombre = $row['nombre'];
+            $descripcion = $row['descripcion'];
+            $precio = $row['precio'];
+
+        }
+
+    }else {
+        echo 'Errar al procesar la petición.';
+        exit;
+    }
+}
 
 ?>
     
@@ -19,7 +47,7 @@ $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda Online</title>
 
-    <!-- CSS de Bootstrap -->
+    <!-- CSS de Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="css/estilos.css" rel="stylesheet">
 </head>
@@ -52,37 +80,16 @@ $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
     </div>
     </header>
 
-    <!-- Productos -->
+    <!-- Detalles de producto -->
     <main>
         <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                <?php foreach($resultado as $row) { ?>
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <?php 
-                        
-                        $id=$row['id'];
-                        $imagen = "images/productos/" . $id . "/principal.jpg";
-
-                        if (!file_exists($imagen)) {
-                            $imagen = "images/no-photo.jpg";
-                        }
-                        
-                        ?>
-                        <img src="<?php echo $imagen; ?>">
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo $row['nombre']; ?></h5>
-                            <p class="card-text"><?php echo number_format($row['precio'], 2, '.', ','); ?> €</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <a href="details.php?id=<?php echo $row['id']; ?>&token=<?php echo hash_hmac('sha256', $row['id'], KEY_TOKEN); ?>" class="btn btn-primary">Detalles</a>            
-                                </div>
-                                <a href="" class="btn btn-success">Agregar</a>  
-                            </div>
-                        </div>
-                    </div>        
+            <div class="row">
+                <div class="col-6-md order-md-1">
+                    <img src="images/productos/<?php echo $id; ?>/principal.jpg">
                 </div>
-                <?php } ?>
+                <div class="col-6-md order-md-2">
+                    <h2><?php echo $nombre; ?></h2>
+                </div>
             </div>
         </div>
     </main>
