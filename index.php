@@ -69,7 +69,7 @@ $resultado = $sql->fetchAll(PDO::FETCH_ASSOC);
                         }
                         
                         ?>
-                        <img src="<?php echo $imagen; ?>">
+                        <img src="<?php echo $imagen; ?>" class="d-block w-100">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $row['nombre']; ?></h5>
                             <p class="card-text"><?php echo number_format($row['precio'], 2, '.', ','); ?> €</p>

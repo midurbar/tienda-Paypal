@@ -22,13 +22,31 @@ if($id=='' || $token=='') {
         $sql->execute([$id]);
         if ($sql->fetchColumn() > 0) {
 
-            $sql = $con->prepare("SELECT nombre, descripcion, precio FROM productos WHERE id=? AND activo=1 LIMIT 1");
+            $sql = $con->prepare("SELECT nombre, descripcion, precio, descuento FROM productos WHERE id=? AND activo=1 LIMIT 1");
             $sql->execute([$id]);
             $row = $sql->fetch(PDO::FETCH_ASSOC);
             $nombre = $row['nombre'];
             $descripcion = $row['descripcion'];
             $precio = $row['precio'];
+            $descuento = $row['descuento'];
+            $precio_desc = $precio - (($precio * $descuento) / 100);
+            $dir_images = 'images/productos/'.$id.'/';
 
+            $rutaImg = $dir_images.'principal.jpg';
+
+            if (!file_exists($rutaImg)) {
+                $rutaImg = 'images/no-photo.jpg';
+            }
+
+            $images = array();
+            $dir = dir($dir_images);
+
+            while(($archivo = $dir->read()) != false) {
+                if ($archivo != 'principal.jpg' && (strpos($archivo, 'jpg') || strpos($archivo, 'jpeg'))) {
+                    $images[] = $dir_images. $archivo;
+                }
+            }
+            $dir->close();
         }
 
     }else {
@@ -85,10 +103,50 @@ if($id=='' || $token=='') {
         <div class="container">
             <div class="row">
                 <div class="col-md-6 order-md-1">
-                    <img src="images/productos/<?php echo $id; ?>/principal.jpg">
+                    <div id="carouselImages" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="<?php echo $rutaImg; ?>" class="d-block w-100">
+                            </div>
+                            <?php foreach ($images as $img) { ?>
+                                <div class="carousel-item">
+                                    <img src="<?php echo $img; ?>" class="d-block w-100">
+                                </div>
+                            <?php } ?>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselImages" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselImages" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
                 </div>
                 <div class="col-md-6 order-md-2">
                     <h2><?php echo $nombre; ?></h2>
+
+                    <?php if ($descuento > 0 ) { ?>
+                        <p><del><?php echo number_format($precio, 2, '.', ',') . MONEDA; ?></del></p>
+                        <h2>
+                            <?php echo number_format($precio_desc, 2, '.', ',') . MONEDA; ?>
+                            <small class="text-success"><?php echo $descuento; ?>% Descuento</small>
+                        </h2>
+                    <?php } else { ?>
+
+                        <h2><?php echo number_format($precio, 2, '.', ',') . MONEDA; ?></h2>
+
+                    <?php } ?>
+                    <p class="lead">
+                        <?php echo $descripcion; ?>
+                    </p>
+
+                    <div class="d-grid gap-3 col-10 mx-auto">
+                        <button class="btn btn-primary" type="button">Comprar Ahora</button>
+                        <button class="btn btn-outline-primary" type="button">Añadir al Carrito</button>
+                    </div>
                 </div>
             </div>
         </div>
