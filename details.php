@@ -148,13 +148,32 @@ if($id=='' || $token=='') {
 
                     <div class="d-grid gap-3 col-10 mx-auto">
                         <button class="btn btn-primary" type="button">Comprar Ahora</button>
-                        <button class="btn btn-outline-primary" type="button">Añadir al Carrito</button>
+                        <button class="btn btn-outline-primary" type="button" onclick="addProducto(<?php echo $id; ?>, '<?php echo $tokem_tmp; ?>')">Añadir al Carrito</button>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <!--Scripts -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+
+    </script>
+        function addProducto(id, token) {
+            let url= 'clases/carrito.php';
+            let formData= new FormData()
+            formData.append('id', id)
+            formData.append('token', token)
+
+            fetch(url, {
+                method: POST,
+                body: formData,
+                mode: 'cros'
+            }).then(response => responso.json())
+        }
+    <script>
+
+    </script>
 </body>
 </html>
