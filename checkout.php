@@ -125,6 +125,12 @@ if ($productos != null) {
                         <?php } ?>
                 </table>
             </div>
+
+            <div class="row">
+                <div class="col-md-5 offset-md-7 d-grid gap-2">
+                    <button class="btn btn-primary btn-lg">Realizar Pago</button>
+                </div>
+            </div>
         </div>
     </main>
 
