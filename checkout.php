@@ -118,7 +118,7 @@ if ($productos != null) {
                                 <tr>
                                     <td colspan="3"></td>
                                     <td colspan="2">
-                                        <p class="h3" id="total"><?php number_format($total_desc, 2, '.',',') . MONEDA; ?></p>
+                                        <p class="h3" id="total"><?php echo number_format($total, 2, '.',',') . MONEDA; ?></p>
                                     </td>
                                 </tr>
                     </tbody>
