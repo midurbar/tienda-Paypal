@@ -103,7 +103,7 @@ if ($productos != null) {
                                     <td> <?php echo $nombre; ?></td>
                                     <td> <?php echo number_format($precio_desc, 2, '.',',') . MONEDA; ?></td>
                                     <td>
-                                        <input type="number" min="1" max="10" step="1" value="<?php echo $cantidad ?>" size="5" id="cantidad_<?php echo $_id; ?>" onchange="">
+                                        <input type="number" min="1" max="10" step="1" value="<?php echo $cantidad ?>" size="5" id="cantidad_<?php echo $_id; ?>" onchange="actualizaCantidad(this.value, <?php echo $_id; ?>)">
                                     </td>
                                     <td> 
                                         <div id="subtotal_<?php echo $_id; ?>" name="subtotal[]">
@@ -137,11 +137,12 @@ if ($productos != null) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
     <script>
-        function addProducto(id, token) {
-            let url= 'clases/carrito.php'
+        function actualizaCantidad(cantidad, id) {
+            let url= 'clases/actualizar_carrito.php'
             let formData= new FormData()
+            formData.append('action', 'agregar')
             formData.append('id', id)
-            formData.append('token', token)
+            formData.append('cantidad', cantidad)
 
             fetch(url, {
                 method: 'POST',
@@ -150,8 +151,10 @@ if ($productos != null) {
             }).then(response => response.json())
             .then(data => {
                 if(data.ok) {
-                    let elemento = document.getElementById("num_cart")
-                    elemento.innerHTML = data.numero
+
+                    let divsubtotal = document.getElementById('subtotal_' + id);
+                    divsubtotal.innerHTML = data.sub
+                    
                 }
             })
         }
