@@ -135,18 +135,18 @@ if ($productos != null) {
     <!--Modal -->
 
     <div class="modal fade" id="eliminaModal" tabindex="-1" aria-labelledby="eliminaModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="eliminaModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="eliminaModalLabel">Alerta</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    ¿Desea eliminar el producto de la lista?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button id='btn-elimina' type="button" class="btn btn-danger" onclick="elimina()">Eliminar</button>
                 </div>
             </div>
         </div>
