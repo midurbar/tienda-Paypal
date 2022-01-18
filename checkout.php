@@ -146,7 +146,7 @@ if ($productos != null) {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button id='btn-elimina' type="button" class="btn btn-danger" onclick="elimina()">Eliminar</button>
+                    <button id='btn-elimina' type="button" class="btn btn-danger" onclick="eliminar()">Eliminar</button>
                 </div>
             </div>
         </div>
@@ -157,6 +157,15 @@ if ($productos != null) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
     <script>
+
+        let eliminaModal = document.getElementById('eliminaModal')
+        eliminaModal.addEventListener('show.bs.modal', function(event){
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            let buttonElimina = eliminaModal.querySelector('.modal-footer #btn-elimina')
+            buttonElimina.value = id
+        })
+
         function actualizaCantidad(cantidad, id) {
             let url= 'clases/actualizar_carrito.php'
             let formData= new FormData()
@@ -190,6 +199,30 @@ if ($productos != null) {
                 }
             })
         }
+
+        function eliminar() {
+
+            let botonElimina = document.getElementById('btn-elimina')
+            let id = botonElimina.value
+
+            let url= 'clases/actualizar_carrito.php'
+            let formData= new FormData()
+            formData.append('action', 'eliminar')
+            formData.append('id', id)
+
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                mode: 'cors'
+            }).then(response => response.json())
+            .then(data => {
+                if(data.ok) {
+                    location.reload()
+                }
+            })
+        }
+
+        
     </script>
 
 </body>
