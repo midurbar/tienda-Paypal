@@ -1,6 +1,6 @@
 <?php
 
-define("CLIENT_ID","Aetzy0y0068msubaINMRw9VIioFBM_qXehhY5dC8U1mGO_F9gy-jwDfHFS-vkwe2EMgh0VwjNjllKrxH");
+define("CLIENT_ID","Aetzy0y0068msubaINMRw9VIioFBM_qXehhY5dC8U1mGO_F9gy%2DjwDfHFS%2Dvkwe2EMgh0VwjNjllKrxH");
 define("CURRENCY","EUR");
 define("KEY_TOKEN","APR.wqc-124*");
 define("MONEDA","€");

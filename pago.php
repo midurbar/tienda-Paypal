@@ -68,12 +68,14 @@ if ($productos != null) {
     <!-- Contenido -->
     <main>
         <div class="container">
+
             <div class="row">
                 <div class="col-6">
                     <h4>Detalles de Pago</h4>
                     <div id="paypal-button-container"></div>
                 </div>
-                <div class="col-6">    
+
+                <div class="col-6">
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
@@ -110,10 +112,10 @@ if ($productos != null) {
                                             </td>
                                         </tr>
                                     <?php } ?>
+
                                     <tr>
-                                        <td colspan="3"></td>
                                         <td colspan="2">
-                                            <p class="h3" id="total"><?php echo number_format($total, 2, '.',',') . MONEDA; ?></p>
+                                            <p class="h3 text-end" id="total"><?php echo number_format($total, 2, '.',',') . MONEDA; ?></p>
                                         </td>
                                     </tr>
                             </tbody>
@@ -142,14 +144,28 @@ if ($productos != null) {
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
-                            value: 100
+                            value: <?php echo $total; ?>
                         }
                     }]
                 })
             },
             onApprove: function(data, actions){
+                let URL = "clases/captura.php"
                 actions.order.capture().then(function(detalles){
-                    window.location.href="completed.html";
+
+                    console.log(detalles)
+
+                    let url= 'clases/captura.php'
+
+                    return fetch(url, {
+                        method: 'post',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            detalles: detalles
+                        })
+                    })
                 });
             },
             onCancel: function(data) {
